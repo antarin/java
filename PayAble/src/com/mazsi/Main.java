@@ -19,25 +19,24 @@ public class Main {
 //            System.out.println(i.getPricePerItem() + ", " + i.getQuantity());
 //        }
 
+        System.out.println(invoiceMap.size());
         String getInvoiceData = scanner.nextLine();
         String[] invoicePiece = getInvoiceData.split(",");
 
 
-        Invoice invoice = new Invoice(Integer.parseInt(invoicePiece[0]),
+        Invoice invoice = new Invoice(invoiceMap.size()+1,
+                invoicePiece[0],
                 invoicePiece[1],
-                invoicePiece[2],
-                Integer.parseInt(invoicePiece[3]),
-                Integer.parseInt(invoicePiece[4]));
+                Integer.parseInt(invoicePiece[2]),
+                Integer.parseInt(invoicePiece[3]));
 
-        invoiceMap.put(Integer.parseInt(invoicePiece[0]), invoice);
+        invoiceMap.put(invoice.getInvoiceNum(), invoice);
+
+        System.out.println(invoiceMap.size());
 
 
-
-        IOFiles.saveFile("invoice.dat", invoiceMap);
+//        IOFiles.saveFile("invoice.dat", invoiceMap);
         Map<Integer, Invoice> newMap = IOFiles.loadInvoiceFile();
-        for (Invoice i :  newMap.values()) {
-            System.out.println(i.getPricePerItem() + ", " + i.getQuantity());
-        }
     }
 
 }

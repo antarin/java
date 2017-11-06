@@ -44,6 +44,6 @@ public class Invoice implements Payable, Serializable {
 
     @Override
     public double getPaymentAmount() {
-        return 0;
+        return this.quantity * this.pricePerItem;
     }
 }
