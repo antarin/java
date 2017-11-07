@@ -1,12 +1,14 @@
 package com.mazsi;
 
+import Classes.*;
+
 import java.util.Map;
 import java.util.Scanner;
 
 public class EmployeeMenu {
 
     private static Scanner scanner = new Scanner(System.in);
-    private static Map<String, Employee> employeeMap =  IOFiles.loadEmployeeeFile();
+    private static Map<String, Employee> employeeMap =  FileReader.loadEmployeeeFile();
 
 
 
@@ -115,11 +117,11 @@ public class EmployeeMenu {
         ;
 
         employeeMap.put(employee.getName(), employee);
-        IOFiles.saveFile("employee.dat", employeeMap);
+        FileReader.saveFile("employee.dat", employeeMap);
     }
 
     private static void printEmployees() {
-        Map<String, Employee> newMap = IOFiles.loadEmployeeeFile();
+        Map<String, Employee> newMap = FileReader.loadEmployeeeFile();
         for (Employee item : newMap.values()) {
             System.out.println("Teljes név: " + item.getName() +
                     " Fizetése: " + item.getPaymentAmount());
@@ -138,6 +140,6 @@ public class EmployeeMenu {
         System.out.println("Kérem adja meg a teljes nevét annak akit törölni szeretne:");
         String name = scanner.nextLine();
         employeeMap.remove(name);
-        IOFiles.saveFile("employee.dat", employeeMap);
+        FileReader.saveFile("employee.dat", employeeMap);
     }
 }

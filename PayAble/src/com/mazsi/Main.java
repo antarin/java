@@ -1,16 +1,20 @@
 package com.mazsi;
 
 
+
+
+import Classes.Invoice;
+
 import java.util.Map;
 import java.util.Scanner;
 
 
 public class Main {
 
-    private static Map<Integer, Invoice> invoiceMap =  IOFiles.loadInvoiceFile();
+    private static Map<Integer, Invoice> invoiceMap =  FileReader.loadInvoiceFile();
 
     private static Scanner scanner = new Scanner(System.in);
-    private static int data = IOFiles.loadData();
+    private static int data = FileReader.loadData();
 
     public static void main(String[] args) {
 
@@ -70,26 +74,26 @@ public class Main {
                 Integer.parseInt(invoicePiece[3]));
 
         invoiceMap.put(invoice.getInvoiceNum(), invoice);
-        IOFiles.saveFile("invoice.dat", invoiceMap);
+        FileReader.saveFile("invoice.dat", invoiceMap);
     }
 
 
     private static void printInvoice() {
-        Map<Integer, Invoice> newMap = IOFiles.loadInvoiceFile();
+        Map<Integer, Invoice> newMap = FileReader.loadInvoiceFile();
         for (Invoice item : newMap.values()) {
             System.out.println("Cikkszám: " + item.getPartNumber() +
                     ", cikk: " + item.getPartDescreption() + ", a számla végösszege: " +
                     item.getPaymentAmount() + ", ID: " + String.format("%04d", item.getInvoiceNum()));
         }
-        IOFiles.saveData();
-        System.out.println("A számlák száma: " + IOFiles.loadData());
+        FileReader.saveData();
+        System.out.println("A számlák száma: " + FileReader.loadData());
     }
 
     private static void remoceInvoice() {
         System.out.println("Kérem adja meg a számla számát a 0-k nélkül: ");
         int name = scanner.nextInt();
         invoiceMap.remove(name);
-        IOFiles.saveFile("invoice.dat", invoiceMap);
+        FileReader.saveFile("invoice.dat", invoiceMap);
     }
 }
 
