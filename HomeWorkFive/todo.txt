@@ -1,0 +1,4 @@
+sad;URGENT;2015.11.11;true;
+Szia;URGENT;2016.12.14;false;
+mazsi;MEDIUM;2015.11.12;false;
+
