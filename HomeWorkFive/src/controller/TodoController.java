@@ -77,7 +77,7 @@ public class TodoController {
         Date date = getDate();
         Todo item = new Todo(name, prior, date);
         todoList.add(item);
-        FileController.saveFileTxt(todoList);
+        FileController.saveFileTxt(item);
     }
 
 
@@ -137,7 +137,7 @@ public class TodoController {
                 System.out.println(todo.getName() + " | " + todo.getPriority() + " | " +
                         sdf.format(todo.getDate()) + " | " + todo.isDone());
 
-                FileController.saveTodoItem(todoList, todo);
+                FileController.saveTodoChangeItem(todoList, todo);
             }
         }
     }

@@ -15,11 +15,10 @@ public class FileController {
 
     private static final String FILENAMETXT = "todo.txt";
 
-    public static void saveFileTxt(List<Todo> listItems) {
+    public static void saveFileTxt(Todo item) {
         try (RandomAccessFile raf = new RandomAccessFile(FILENAMETXT, "rw")) {
-            for (Todo item : listItems) {
+            raf.seek(raf.length());
                 raf.writeBytes(item.toString() + System.lineSeparator());
-            }
         } catch (IOException e) {
             System.out.println("Hiba!" + e.getMessage());
         }
@@ -58,7 +57,7 @@ public class FileController {
         }
     }
 
-    public static void saveTodoItem(List<Todo> listItems, Todo item) {
+    public static void saveTodoChangeItem(List<Todo> listItems, Todo item) {
         try (RandomAccessFile raf = new RandomAccessFile(FILENAMETXT, "rw")) {
 
             String line;
