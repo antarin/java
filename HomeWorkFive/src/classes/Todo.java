@@ -4,7 +4,6 @@ import controller.TodoController;
 import enums.Priority;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Todo {
@@ -61,10 +60,6 @@ public class Todo {
     public boolean isDone() {
         return done;
     }
-
-//    public int compareTo(Todo item) {
-//        return this.name.compareToIgnoreCase(item.getName());
-//    }
 
     @Override
     public String toString() {

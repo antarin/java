@@ -1,20 +1,15 @@
 package controller;
 
 import classes.Todo;
-import com.sun.xml.internal.ws.wsdl.parser.ParserUtil;
 import enums.Priority;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class FileController {
 
@@ -22,9 +17,6 @@ public class FileController {
 
     public static void saveFileTxt(List<Todo> listItems) {
         try (RandomAccessFile raf = new RandomAccessFile(FILENAMETXT, "rw")) {
-//            if (listItems.size() > 1) {
-//                raf.seek(raf.length());
-//            }
             for (Todo item : listItems) {
                 raf.writeBytes(item.toString() + System.lineSeparator());
             }
@@ -37,14 +29,10 @@ public class FileController {
         try (RandomAccessFile raf = new RandomAccessFile(FILENAMETXT, "rw")) {
 
             List<Todo> todoList = new ArrayList<>();
-            String line = null;
-            boolean eof = false;
+            String line;
 
-            while (!eof) {
-                try {
-                    line = raf.readLine();
+            while ((line = raf.readLine()) != null) {
                     String[] lineElements = line.split(";");
-                    System.out.println(lineElements.length);
                     String name = lineElements[0];
                     Priority prior = Priority.valueOf(lineElements[1]);
 
@@ -60,10 +48,6 @@ public class FileController {
                     if (!done) {
                         todoList.add(new Todo(name, prior, value, done));
                     }
-                } catch (Exception e) {
-                    eof = true;
-                }
-
             }
 
             return todoList;
@@ -73,13 +57,16 @@ public class FileController {
             return null;
         }
     }
-    public static void saveFileTxt2(List<Todo> listItems) {
+
+    public static void saveTodoItem(List<Todo> listItems, Todo item) {
         try (RandomAccessFile raf = new RandomAccessFile(FILENAMETXT, "rw")) {
-//            if (listItems.size() > 1) {
-//                raf.seek(raf.length());
-//            }
-            for (Todo item : listItems) {
-                raf.writeBytes(item.toString() + System.lineSeparator());
+
+            String line;
+            while ((line = raf.readLine()) != null) {
+                if (line.contains(item.getName())) {
+                    raf.seek(raf.getFilePointer() - (line.length() + System.lineSeparator().length()));
+                    raf.writeBytes(item.toString());
+                }
             }
         } catch (IOException e) {
             System.out.println("Hiba!" + e.getMessage());

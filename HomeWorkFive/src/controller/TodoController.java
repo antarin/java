@@ -108,24 +108,22 @@ public class TodoController {
 
     private static void listTodoItems(int sort) {
         todoList = FileController.loadFile();
-        todoList.sort(new Comparator<Todo>() {
-            @Override
-            public int compare(Todo o1, Todo o2) {
-                switch (sort) {
-                    case SORT_BY_URGENT:
-                        return o1.getPriority().compareTo(o2.getPriority());
-                    case SORT_BY_DATE:
-                        return o2.getDate().compareTo(o1.getDate());
-                    case SORT_BY_NAME:
-                        return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
-                }
-
-                return 0;
+        todoList.sort((todo1, todo2) -> {
+            switch (sort) {
+                case SORT_BY_URGENT:
+                    return todo1.getPriority().compareTo(todo2.getPriority());
+                case SORT_BY_DATE:
+                    return todo2.getDate().compareTo(todo1.getDate());
+                case SORT_BY_NAME:
+                    return todo1.getName().toLowerCase().compareTo(todo2.getName().toLowerCase());
             }
+
+            return 0;
         });
 
         for (Todo item : todoList) {
-            System.out.println(item.getName() + " | " + item.getPriority() + " | " + sdf.format(item.getDate()) + " | " + item.isDone());
+            System.out.println(item.getName() + " | " + item.getPriority() + " | " +
+                    sdf.format(item.getDate()) + " | " + item.isDone());
         }
     }
 
@@ -136,10 +134,11 @@ public class TodoController {
         for (Todo todo : todoList = FileController.loadFile()) {
             if (todo.getName().toLowerCase().equals(todoName.toLowerCase())) {
                 todo.setDone(true);
+                System.out.println(todo.getName() + " | " + todo.getPriority() + " | " +
+                        sdf.format(todo.getDate()) + " | " + todo.isDone());
+
+                FileController.saveTodoItem(todoList, todo);
             }
-
         }
-        FileController.saveFileTxt(todoList);
-
     }
 }
