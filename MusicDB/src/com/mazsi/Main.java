@@ -66,6 +66,7 @@ public class Main {
             System.out.println("| Előadó: " + item.getArtistName() + " | Album: " + item.getAlbumName() + " | Szám: " + item.getTrack() + " |");
         }
 
+        datasource.insertSong("Freedom", "Paddy and the Rats", "Freedom", 1);
 
         datasource.close();
     }

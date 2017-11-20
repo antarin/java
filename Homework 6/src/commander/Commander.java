@@ -5,10 +5,11 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 public class Commander {
@@ -47,30 +48,31 @@ public class Commander {
     public static void getFileTree(File[] path, boolean show, int deep, int index) {
 
         if (deep >= 0) {
-            try {
-                for (File file : path) {
-                    index = index + 1;
+            for (File file : path) {
+                try {
+                    if (fileSystem.containsKey(index)) {
+                        index = fileSystem.size();
+                    }
+                    index++;
                     fileSystem.put(index, file);
                     if (file.isDirectory()) {
                         getFileTree(file.listFiles(), show, (deep - 1), index);
                     }
                     System.out.println(index + " " + file.getAbsolutePath());
+                } catch (NullPointerException e) {
+
                 }
-            } catch (NullPointerException e) {
-                System.out.println("Hibaaaaaa" + e.getMessage());
             }
         }
     }
 
     public static void copyFile(int origin, int dest) {
-//        getFiles(MainController.currentPosition, false);
-//        getFileTree(MainController.currentPosition.listFiles(), false, 15, 0);
 
         File file = fileSystem.get(origin);
-        Path destt = Paths.get(fileSystem.get(dest).getAbsolutePath() + File.separator + file.getName());
+        Path destination = Paths.get(fileSystem.get(dest).getAbsolutePath() + File.separator + file.getName());
         try {
 
-            Files.copy(file.toPath(), destt);
+            Files.copy(file.toPath(), destination);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,19 +81,44 @@ public class Commander {
     }
 
     public static void moveFile(int origin, int dest) {
-//        getFiles(MainController.currentPosition, false);
-//        getFileTree(MainController.currentPosition.listFiles(), false, 15, 0);
 
         File file = fileSystem.get(origin);
-        Path destt = Paths.get(fileSystem.get(dest).getAbsolutePath() + File.separator + file.getName());
+        Path destination = Paths.get(fileSystem.get(dest).getAbsolutePath() + File.separator + file.getName());
         try {
 
-            Files.move(file.toPath(), destt);
+            Files.move(file.toPath(), destination);
             file.delete();
 
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Hiba 2 " + e.getMessage());
+        }
+    }
+
+    public static void zipFiles(int[] index) {
+
+        try {
+            byte[] b = new byte[1024];
+            int count;
+            File input = null;
+            FileInputStream fileInput = null;
+            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(getProperties() + File.separator + "tmp.zip"));
+            for (int i : index) {
+                input = fileSystem.get(i);
+                System.out.println(fileSystem.get(i).getName());
+                fileInput = new FileInputStream(input.getAbsoluteFile());
+                out.putNextEntry(new ZipEntry(input.getName()));
+                while ((count = fileInput.read(b)) > 0) {
+                    out.write(b, 0, count);
+                }
+            }
+
+            fileInput.close();
+            out.close();
+
+        } catch (IOException e) {
+            System.out.println("Hiba a zip-ben.");
+            e.printStackTrace();
         }
     }
 }

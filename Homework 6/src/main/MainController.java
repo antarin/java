@@ -17,12 +17,9 @@
 package main;
 
 import commander.Commander;
+import repeatersearch.RepeaterSearch;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Properties;
 import java.util.Scanner;
 
 public class MainController {
@@ -45,7 +42,8 @@ public class MainController {
         while (!quit) {
             System.out.print(currentPosition.getPath() + " ");
             String action = scanner.nextLine();
-            String[] order = action.split(" ", 3);
+            String[] order = action.split(" ");
+
             switch (order[0].toLowerCase()) {
                 case "quit":
                     System.out.println("Visztlát!");
@@ -55,13 +53,16 @@ public class MainController {
                     Commander.getFiles(currentPosition, true);
                     break;
                 case "dirall":
-                    Commander.getFileTree(currentPosition.listFiles(), true , Integer.parseInt(order[1]), 0);
+                    Commander.getFileTree(currentPosition.listFiles(), true, Integer.parseInt(order[1]), 0);
                     break;
                 case "copy":
                     Commander.copyFile(Integer.parseInt(order[1]), Integer.parseInt(order[2]));
                     break;
                 case "move":
                     Commander.moveFile(Integer.parseInt(order[1]), Integer.parseInt(order[2]));
+                    break;
+                case "zip":
+                    Commander.zipFiles(getNumbers(order));
                     break;
                 case "cd":
                     if (!Commander.fileSystem.containsValue(order[1])) {
@@ -77,6 +78,9 @@ public class MainController {
                     } else {
                         currentPosition = new File(currentPosition.getAbsolutePath() + File.separator + order[1]);
                     }
+                    break;
+                case "repeater":
+                    RepeaterSearch.unzip();
                     break;
             }
         }
@@ -95,4 +99,22 @@ public class MainController {
         return value;
     }
 
+    private static int[] getNumbers(String[] numbers) {
+
+        int[] fileIndex = new int[numbers.length-1];
+        try {
+            for (int index = 0; index < numbers.length; index ++) {
+                if (index != 0) {
+                    fileIndex[index-1] = Integer.parseInt(numbers[index]);
+                }
+            }
+
+            return fileIndex;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Hibás adat!");
+            return  null;
+        }
+
+    }
 }

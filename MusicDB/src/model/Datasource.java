@@ -7,7 +7,7 @@ import java.util.List;
 public class Datasource {
 
     public static final String DB_NAME = "music.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Java\\MusicDB\\" + DB_NAME;
+    public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Java\\java\\MusicDB\\" + DB_NAME;
 
     public static final String TABLE_ARTISTS = "artists";
     public static final String COLUMN_ARTIST_ID = "_id";
@@ -391,7 +391,7 @@ public class Datasource {
         }
     }
 
-    private void insertSong(String title, String artist, String album, int track) {
+    public void insertSong(String title, String artist, String album, int track) {
 
         try {
             connection.setAutoCommit(false);
