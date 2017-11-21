@@ -65,10 +65,6 @@ public class MainController {
                     Commander.zipFiles(getNumbers(order));
                     break;
                 case "cd":
-                    if (!Commander.fileSystem.containsValue(order[1])) {
-                        System.out.println("Nincs ilyen mappa");
-                        break;
-                    }
                     if (order[1].equals("..")) {
                         order[1] = currentPosition.getAbsolutePath().substring(currentPosition.getAbsolutePath().lastIndexOf(File.separator) + 1);
                         order[1] = currentPosition.getAbsolutePath().replace(order[1], "");
@@ -76,6 +72,10 @@ public class MainController {
                         currentPosition = new File(order[1]);
 
                     } else {
+//                        if (!Commander.fileSystem.get(order[1]).i()) {
+//                            System.out.println("Nincs ilyen mappa");
+//                            break;
+//                        }
                         currentPosition = new File(currentPosition.getAbsolutePath() + File.separator + order[1]);
                     }
                     break;
