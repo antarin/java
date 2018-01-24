@@ -6,11 +6,15 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class JsonTest {
+
+
 
     @Test
     public void jsonTry() {
@@ -33,35 +37,42 @@ public class JsonTest {
 
     @Test
     public void jsonFromFileToList() {
-        ObjectMapper objectMapper = new ObjectMapper();
+
+        URL resource = getClass().getResource("posts.json");
+        List<Post> posts = new ArrayList<>();
 
         try {
-            File file = new File("C:\\Java\\Converter\\src\\main\\data\\posts.json");
-            List<Post> posts = objectMapper.readValue(file, new TypeReference<List<Post>>(){});
-
-            assertEquals(posts.get(0).getUserId(), 1);
-            assertEquals(posts.get(0).getId(), 1);
-            assertEquals(posts.get(0).getTitle(), "sunt aut facere repellat provident occaecati excepturi optio reprehenderit");
-            assertEquals(posts.get(0).getBody(), "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto");
-            assertEquals(posts.size(), 100);
-
+            ObjectMapper objectMapper = new ObjectMapper();
+            File file = new File(resource.getFile());
+            List<Post> list = objectMapper.readValue(file, new TypeReference<List<Post>>(){});
+            posts = list;
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+
+        assertEquals(posts.get(0).getUserId(), 1);
+        assertEquals(posts.get(0).getId(), 1);
+        assertEquals(posts.get(0).getTitle(), "sunt aut facere repellat provident occaecati excepturi optio reprehenderit");
+        assertEquals(posts.get(0).getBody(), "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto");
+        assertEquals(posts.size(), 100);
     }
 
     @Test
     public void jsonFromComplexClassFromFileToList() {
-        ObjectMapper objectMapper = new ObjectMapper();
+
+        URL resource = getClass().getResource("users.json");
+        List<User> users = new ArrayList<>();
 
         try {
-            File file = new File("C:\\Java\\Converter\\src\\main\\data\\users.json");
-            List<User> users = objectMapper.readValue(file, new TypeReference<List<User>>() {
-            });
-            assertEquals(users.get(0).getAddress().getCity(), "Gwenborough");
-            assertEquals(users.size(), 10);
+            ObjectMapper objectMapper = new ObjectMapper();
+            File file = new File(resource.getFile());
+            List<User> list = objectMapper.readValue(file, new TypeReference<List<User>>() {});
+            users = list;
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+
+        assertEquals(users.get(0).getAddress().getCity(), "Gwenborough");
+        assertEquals(users.size(), 10);
     }
 }
