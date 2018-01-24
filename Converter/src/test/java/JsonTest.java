@@ -1,10 +1,14 @@
+import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.mazsi.json.Post;
 import com.mazsi.json.User;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,8 +17,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class JsonTest {
-
-
 
     @Test
     public void jsonTry() {
@@ -75,4 +77,28 @@ public class JsonTest {
         assertEquals(users.get(0).getAddress().getCity(), "Gwenborough");
         assertEquals(users.size(), 10);
     }
+
+    @Test
+    public void javaClassToJsonObject() throws IOException {
+
+        URL resource = getClass().getResource("posts.json");
+        String dir = System.getProperty("user.dir").concat(File.separator)
+                .concat("src" + File.separator + "main" + File.separator + "resources" + File.separator)
+                .concat("output.json");
+
+        JsonFactory jsonFactory = new JsonFactory();
+        ObjectMapper mapper = new ObjectMapper();
+
+        FileOutputStream file2 = new FileOutputStream(new File(dir));
+        JsonGenerator jsonGen = jsonFactory.createJsonGenerator(file2, JsonEncoding.UTF8);
+
+        File file = new File(resource.getFile());
+        List<Post> posts = mapper.readValue(file, new TypeReference<List<Post>>() {});
+
+
+        jsonGen.setCodec(new ObjectMapper());
+        jsonGen.setPrettyPrinter(new DefaultPrettyPrinter());
+        jsonGen.writeObject(posts);
+    }
+
 }
