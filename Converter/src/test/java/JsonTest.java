@@ -1,11 +1,14 @@
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mazsi.json.Post;
+import com.mazsi.json.User;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
 
 public class JsonTest {
 
@@ -31,16 +34,32 @@ public class JsonTest {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try  {
-            File file = new File("C:\\Java\\Converter\\src\\main\\data\\data.json");
+            File file = new File("C:\\Java\\Converter\\src\\main\\data\\posts.json");
             List<Post> posts = objectMapper.readValue(file, new TypeReference<List<Post>>(){});
             posts.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
             for (Post post : posts) {
+                assertNotNull(post.getBody());
+                assertNotNull(post.getTitle());
+                assertNotNull(post.getId());
                 System.out.println("Id: " + post.getId() + " | " + "Címe: " + post.getTitle());
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    @Test
+    public void jsonFromComplexClassFromFileToList() {
+        ObjectMapper objectMapper = new ObjectMapper();
 
+        try  {
+            File file = new File("C:\\Java\\Converter\\src\\main\\data\\users.json");
+            List<User> users = objectMapper.readValue(file, new TypeReference<List<User>>(){});
+            for (User user : users) {
+                assertNotNull(user.getAddress().getCity());
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
