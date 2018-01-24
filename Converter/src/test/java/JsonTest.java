@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 public class JsonTest {
 
@@ -22,8 +22,10 @@ public class JsonTest {
         try {
             Post post = objectMapper.readValue(postJson, Post.class);
 
-            System.out.println("Post id = " + post.getId());
-            System.out.println("Post body = " + post.getBody());
+            assertEquals(post.getId(), 5);
+            assertEquals(post.getUserId(), 1);
+            assertEquals(post.getTitle(), "Szia");
+            assertEquals(post.getBody(), "Na sziaaa :) ");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,13 +38,12 @@ public class JsonTest {
         try  {
             File file = new File("C:\\Java\\Converter\\src\\main\\data\\posts.json");
             List<Post> posts = objectMapper.readValue(file, new TypeReference<List<Post>>(){});
-            posts.sort((o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
-            for (Post post : posts) {
-                assertNotNull(post.getBody());
-                assertNotNull(post.getTitle());
-                assertNotNull(post.getId());
-                System.out.println("Id: " + post.getId() + " | " + "Címe: " + post.getTitle());
-            }
+
+                    assertEquals(posts.get(0).getUserId(), 1);
+                    assertEquals(posts.get(0).getId(), 1);
+                    assertEquals(posts.get(0).getTitle(), "sunt aut facere repellat provident occaecati excepturi optio reprehenderit");
+                    assertEquals(posts.get(0).getBody(), "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto");
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -55,9 +56,7 @@ public class JsonTest {
         try  {
             File file = new File("C:\\Java\\Converter\\src\\main\\data\\users.json");
             List<User> users = objectMapper.readValue(file, new TypeReference<List<User>>(){});
-            for (User user : users) {
-                assertNotNull(user.getAddress().getCity());
-            }
+                assertEquals(users.get(0).getAddress().getCity(), "Gwenborough");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
