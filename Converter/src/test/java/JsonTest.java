@@ -35,14 +35,15 @@ public class JsonTest {
     public void jsonFromFileToList() {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try  {
+        try {
             File file = new File("C:\\Java\\Converter\\src\\main\\data\\posts.json");
             List<Post> posts = objectMapper.readValue(file, new TypeReference<List<Post>>(){});
 
-                    assertEquals(posts.get(0).getUserId(), 1);
-                    assertEquals(posts.get(0).getId(), 1);
-                    assertEquals(posts.get(0).getTitle(), "sunt aut facere repellat provident occaecati excepturi optio reprehenderit");
-                    assertEquals(posts.get(0).getBody(), "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto");
+            assertEquals(posts.get(0).getUserId(), 1);
+            assertEquals(posts.get(0).getId(), 1);
+            assertEquals(posts.get(0).getTitle(), "sunt aut facere repellat provident occaecati excepturi optio reprehenderit");
+            assertEquals(posts.get(0).getBody(), "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto");
+            assertEquals(posts.size(), 100);
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -53,10 +54,12 @@ public class JsonTest {
     public void jsonFromComplexClassFromFileToList() {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        try  {
+        try {
             File file = new File("C:\\Java\\Converter\\src\\main\\data\\users.json");
-            List<User> users = objectMapper.readValue(file, new TypeReference<List<User>>(){});
-                assertEquals(users.get(0).getAddress().getCity(), "Gwenborough");
+            List<User> users = objectMapper.readValue(file, new TypeReference<List<User>>() {
+            });
+            assertEquals(users.get(0).getAddress().getCity(), "Gwenborough");
+            assertEquals(users.size(), 10);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
